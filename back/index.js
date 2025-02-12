@@ -8,6 +8,17 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
+const authMiddleware = require("./middleware/auth");
+
+app.get("/users", authMiddleware, async (req, res) => {
+    try {
+        const users = await User.find();
+        res.json(users);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+
 app.use(cors());
 app.use(express.json());
 
